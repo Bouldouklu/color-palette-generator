@@ -44,7 +44,47 @@ header p {
     display: flex;
     gap: 20px;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+}
+
+.harmony-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.harmony-selector label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.harmony-dropdown {
+    padding: 12px 20px;
+    border: 2px solid #667eea;
+    border-radius: 25px;
+    background: white;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 180px;
+    outline: none;
+}
+
+.harmony-dropdown:hover {
+    border-color: #f5576c;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.harmony-dropdown:focus {
+    border-color: #f5576c;
+    box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
 }
 
 .generate-btn, .export-btn {
@@ -170,9 +210,18 @@ header p {
     .controls {
         flex-direction: column;
         align-items: center;
+        gap: 15px;
+    }
+    
+    .harmony-selector {
+        order: -1;
     }
     
     .generate-btn, .export-btn {
         width: 200px;
+    }
+    
+    .harmony-dropdown {
+        min-width: 200px;
     }
 }

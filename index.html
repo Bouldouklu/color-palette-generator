@@ -9,10 +9,22 @@
     <div class="container">
         <header>
             <h1>🎨 Color Palette Generator</h1>
-            <p>Create beautiful color palettes with a single click!</p>
+            <p>Create beautiful color palettes with different harmony types!</p>
         </header>
 
         <div class="controls">
+            <div class="harmony-selector">
+                <label for="harmonyType">Harmony Type:</label>
+                <select id="harmonyType" class="harmony-dropdown">
+                    <option value="mixed">Mixed Harmony</option>
+                    <option value="monochromatic">Monochromatic</option>
+                    <option value="analogous">Analogous</option>
+                    <option value="complementary">Complementary</option>
+                    <option value="split-complementary">Split-Complementary</option>
+                    <option value="triadic">Triadic</option>
+                    <option value="tetradic">Tetradic</option>
+                </select>
+            </div>
             <button id="generateBtn" class="generate-btn">Generate New Palette</button>
             <button id="exportBtn" class="export-btn">Export Palette</button>
         </div>
@@ -22,7 +34,7 @@
         </div>
 
         <div class="info">
-            <p>💡 <strong>Tip:</strong> Click on any color to copy its hex code!</p>
+            <p>💡 <strong>Tip:</strong> Click on any color to copy its hex code! Try different harmony types for various moods and styles.</p>
         </div>
     </div>
 
