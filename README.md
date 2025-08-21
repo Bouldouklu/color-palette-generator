@@ -15,13 +15,6 @@ A beautiful, interactive color palette generator that creates harmonious color s
   - Triadic (three evenly spaced colors)
   - Tetradic (two complementary pairs)
 
-### 🎯 User Interface
-- **Intuitive Color Input**: Color picker + text input with real-time synchronization
-- **Multiple Color Formats**: Display and copy colors in HEX, RGB, or HSL
-- **Visual Indicators**: Starting colors are clearly marked as "BASE"
-- **Click to Copy**: One-click copying of color values to clipboard
-- **Responsive Design**: Works seamlessly on mobile and desktop
-
 ### 📤 Export & Share
 - **JSON Export**: Download palettes with complete color data
 - **Enhanced Metadata**: Exports include harmony type, starting color, and timestamp
