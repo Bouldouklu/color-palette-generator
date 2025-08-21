@@ -12,7 +12,7 @@ A beautiful, interactive color palette generator that creates harmonious color s
 
 ## Live Demo
 
-Visit the live site: [https://yourusername.github.io/color-palette-generator](https://yourusername.github.io/color-palette-generator)
+Visit the live site: [https://bouldouklu.github.io/color-palette-generator](https://bouldouklu.github.io/color-palette-generator)
 
 ## Usage
 
