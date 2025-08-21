@@ -1,6 +1,6 @@
 # Color Palette Generator
 
-A interactive color palette generator that creates harmonious color schemes using different color theory principles. Generate palettes from scratch or build them around your specific starting colors.
+An interactive color palette generator that creates harmonious color schemes using different color theory principles. Generate palettes from scratch or build them around your specific starting colors.
 
 ## ✨ Features
 
