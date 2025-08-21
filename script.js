@@ -7,9 +7,14 @@ class ColorPaletteGenerator {
         this.exportBtn = document.getElementById('exportBtn');
         this.harmonyTypeSelector = document.getElementById('harmonyType');
         this.colorFormatSelector = document.getElementById('colorFormat');
+        this.colorPicker = document.getElementById('colorPicker');
+        this.colorTextInput = document.getElementById('colorTextInput');
+        this.clearColorBtn = document.getElementById('clearColorBtn');
         
         // Store the current palette colors for export functionality
         this.currentPalette = [];
+        this.hasStartingColor = false;
+        this.startingColorIndex = -1;
         
         // Initialize the application
         this.init();
@@ -29,8 +34,90 @@ class ColorPaletteGenerator {
         // When color format changes, update the display without generating new colors
         this.colorFormatSelector.addEventListener('change', () => this.renderPalette());
         
+        // Color picker and text input synchronization
+        this.colorPicker.addEventListener('input', (e) => {
+            this.colorTextInput.value = e.target.value.toUpperCase();
+            this.generatePalette();
+        });
+        
+        this.colorTextInput.addEventListener('input', (e) => {
+            const value = e.target.value;
+            if (this.isValidHexColor(value)) {
+                this.colorPicker.value = value;
+                this.generatePalette();
+            }
+        });
+        
+        this.clearColorBtn.addEventListener('click', () => {
+            this.colorTextInput.value = '';
+            this.generatePalette();
+        });
+        
+        // Initialize with empty starting color
+        this.colorTextInput.value = '';
+        
         // Create an initial palette when the app loads
         this.generatePalette();
+    }
+    
+    // Validate if a string is a valid hex color
+    isValidHexColor(hex) {
+        return /^#([0-9A-F]{3}){1,2}$/i.test(hex);
+    }
+    
+    // Convert hex color to HSL values
+    hexToHsl(hex) {
+        // Remove # if present
+        hex = hex.replace('#', '');
+        
+        // Convert hex to RGB
+        const r = parseInt(hex.substr(0, 2), 16) / 255;
+        const g = parseInt(hex.substr(2, 2), 16) / 255;
+        const b = parseInt(hex.substr(4, 2), 16) / 255;
+        
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        
+        if (max === min) {
+            h = s = 0; // achromatic
+        } else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        
+        return {
+            hue: Math.round(h * 360),
+            saturation: Math.round(s * 100),
+            lightness: Math.round(l * 100)
+        };
+    }
+    
+    // Get starting color from user input or generate random
+    getStartingColor() {
+        const userColor = this.colorTextInput.value.trim();
+        
+        if (userColor && this.isValidHexColor(userColor)) {
+            this.hasStartingColor = true;
+            const hsl = this.hexToHsl(userColor);
+            return {
+                hsl: `hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.lightness}%)`,
+                hex: userColor.toUpperCase(),
+                hue: hsl.hue,
+                saturation: hsl.saturation,
+                lightness: hsl.lightness
+            };
+        } else {
+            this.hasStartingColor = false;
+            return this.generateRandomColor();
+        }
     }
     
     // Generate a single random color with good saturation and lightness values
@@ -115,6 +202,7 @@ class ColorPaletteGenerator {
                 return color.hex;
         }
     }
+    
     // This is a mathematical conversion formula
     hslToHex(h, s, l) {
         l /= 100; // Convert lightness percentage to decimal (0-1)
@@ -137,8 +225,9 @@ class ColorPaletteGenerator {
     
     // Generate monochromatic palette (same hue, different saturation/lightness)
     generateMonochromaticPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Create 4 variations of the same hue with different saturation/lightness
         for (let i = 1; i < 5; i++) {
@@ -162,8 +251,9 @@ class ColorPaletteGenerator {
     
     // Generate analogous palette (adjacent colors on color wheel)
     generateAnalogousPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Create colors that are 15-30 degrees apart on the color wheel
         for (let i = 1; i < 5; i++) {
@@ -188,10 +278,11 @@ class ColorPaletteGenerator {
     
     // Generate complementary palette (opposite colors + variations)
     generateComplementaryPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const complementHue = (baseColor.hue + 180) % 360;
         
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Add the direct complement
         colors.push({
@@ -223,8 +314,9 @@ class ColorPaletteGenerator {
     
     // Generate split-complementary palette (base + two colors adjacent to complement)
     generateSplitComplementaryPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Calculate split-complement colors (150° and 210° from base)
         const splitComp1 = (baseColor.hue + 150) % 360;
@@ -264,8 +356,9 @@ class ColorPaletteGenerator {
     
     // Generate triadic palette (three colors evenly spaced around color wheel)
     generateTriadicPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Calculate triadic colors (120° and 240° from base)
         const triadic1 = (baseColor.hue + 120) % 360;
@@ -304,8 +397,9 @@ class ColorPaletteGenerator {
     
     // Generate tetradic/rectangle palette (two pairs of complementary colors)
     generateTetradicPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Calculate tetradic colors (90°, 180°, 270° from base)
         const tetradic1 = (baseColor.hue + 90) % 360;   // 90° from base
@@ -344,8 +438,9 @@ class ColorPaletteGenerator {
     
     // Generate mixed harmony palette (original algorithm - combination of different harmony types)
     generateMixedHarmonyPalette() {
-        const baseColor = this.generateRandomColor();
+        const baseColor = this.getStartingColor();
         const colors = [baseColor];
+        this.startingColorIndex = 0;
         
         // Generate 4 additional colors using different harmony relationships
         for (let i = 1; i < 5; i++) {
@@ -430,6 +525,14 @@ class ColorPaletteGenerator {
             colorBox.className = 'color-box';
             colorBox.style.backgroundColor = color.hsl; // Always use HSL for background color
             
+            // Add indicator if this is the starting color
+            if (this.hasStartingColor && index === this.startingColorIndex) {
+                const indicator = document.createElement('div');
+                indicator.className = 'starting-color-indicator';
+                indicator.textContent = 'BASE';
+                colorBox.appendChild(indicator);
+            }
+            
             // Create container for color information text
             const colorInfo = document.createElement('div');
             colorInfo.className = 'color-info';
@@ -496,10 +599,12 @@ class ColorPaletteGenerator {
     // Export the current palette as a downloadable JSON file
     exportPalette() {
         const harmonyType = this.harmonyTypeSelector.value;
+        const startingColorValue = this.hasStartingColor ? this.colorTextInput.value : null;
         
         // Create structured data object for export
         const paletteData = {
             harmonyType: harmonyType,               // Include the harmony type used
+            startingColor: startingColorValue,      // Include starting color if used
             colors: this.currentPalette.map(color => {
                 const rgb = this.hslToRgb(color.hue, color.saturation, color.lightness);
                 return {

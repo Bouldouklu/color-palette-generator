@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +14,15 @@
         </header>
 
         <div class="controls">
+            <div class="color-input-container">
+                <label for="startingColor">Starting Color (Optional):</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="colorPicker" class="color-picker" value="#3498db">
+                    <input type="text" id="colorTextInput" class="color-text-input" placeholder="#3498db" maxlength="7">
+                    <button id="clearColorBtn" class="clear-color-btn" title="Clear starting color">×</button>
+                </div>
+            </div>
+
             <div class="harmony-selector">
                 <label for="harmonyType">Harmony Type:</label>
                 <select id="harmonyType" class="harmony-dropdown">
@@ -44,7 +54,7 @@
         </div>
 
         <div class="info">
-            <p>💡 <strong>Tip:</strong> Click on any color to copy its hex code! Try different harmony types for various moods and styles.</p>
+            <p>💡 <strong>Tip:</strong> Click on any color to copy its value! Optionally set a starting color, or leave it empty for random generation. Try different harmony types for various moods and styles.</p>
         </div>
     </div>
 

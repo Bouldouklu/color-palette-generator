@@ -48,14 +48,14 @@ header p {
     flex-wrap: wrap;
 }
 
-.harmony-selector, .format-selector {
+.harmony-selector, .format-selector, .color-input-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
 }
 
-.harmony-selector label, .format-selector label {
+.harmony-selector label, .format-selector label, .color-input-container label {
     font-weight: 600;
     color: #333;
     font-size: 0.95rem;
@@ -75,6 +75,63 @@ header p {
     transition: all 0.3s ease;
     min-width: 180px;
     outline: none;
+}
+
+.color-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 2px solid #666;
+    border-radius: 25px;
+    padding: 6px;
+    transition: all 0.3s ease;
+}
+
+.color-input-wrapper:hover, .color-input-wrapper:focus-within {
+    border-color: #444;
+    box-shadow: 0 5px 15px rgba(68, 68, 68, 0.2);
+}
+
+.color-picker {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.color-picker:hover {
+    transform: scale(1.1);
+}
+
+.color-text-input {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    background: transparent;
+    width: 120px;
+    text-align: center;
+}
+
+.clear-color-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.clear-color-btn:hover {
+    background: #ff5252;
+    transform: scale(1.1);
 }
 
 .harmony-dropdown:hover, .format-dropdown:hover {
@@ -196,6 +253,20 @@ header p {
     transform: translateX(0);
 }
 
+.starting-color-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 @media (max-width: 768px) {
     .palette-container {
         flex-direction: column;
@@ -215,7 +286,7 @@ header p {
         gap: 15px;
     }
     
-    .harmony-selector, .format-selector {
+    .harmony-selector, .format-selector, .color-input-container {
         order: -1;
     }
     
@@ -225,5 +296,10 @@ header p {
     
     .harmony-dropdown, .format-dropdown {
         min-width: 200px;
+    }
+
+    .color-input-wrapper {
+        min-width: 200px;
+        justify-content: center;
     }
 }
