@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #f5f5f5;
     min-height: 100vh;
     padding: 20px;
 }
@@ -23,7 +23,7 @@ body {
 header {
     text-align: center;
     padding: 40px 20px 20px;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: #6a6a6a;
     color: white;
 }
 
@@ -65,7 +65,7 @@ header p {
 
 .harmony-dropdown, .format-dropdown {
     padding: 12px 20px;
-    border: 2px solid #667eea;
+    border: 2px solid #666;
     border-radius: 25px;
     background: white;
     font-size: 1rem;
@@ -78,13 +78,13 @@ header p {
 }
 
 .harmony-dropdown:hover, .format-dropdown:hover {
-    border-color: #f5576c;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    border-color: #444;
+    box-shadow: 0 5px 15px rgba(68, 68, 68, 0.2);
 }
 
 .harmony-dropdown:focus, .format-dropdown:focus {
-    border-color: #f5576c;
-    box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
+    border-color: #444;
+    box-shadow: 0 5px 15px rgba(68, 68, 68, 0.3);
 }
 
 .generate-btn, .export-btn {
@@ -100,23 +100,25 @@ header p {
 }
 
 .generate-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #555;
     color: white;
 }
 
 .generate-btn:hover {
+    background: #444;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 20px rgba(68, 68, 68, 0.3);
 }
 
 .export-btn {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: #777;
     color: white;
 }
 
 .export-btn:hover {
+    background: #666;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(245, 87, 108, 0.3);
+    box-shadow: 0 10px 20px rgba(102, 102, 102, 0.3);
 }
 
 .palette-container {
