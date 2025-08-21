@@ -48,14 +48,14 @@ header p {
     flex-wrap: wrap;
 }
 
-.harmony-selector {
+.harmony-selector, .format-selector {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
 }
 
-.harmony-selector label {
+.harmony-selector label, .format-selector label {
     font-weight: 600;
     color: #333;
     font-size: 0.95rem;
@@ -63,7 +63,7 @@ header p {
     letter-spacing: 0.5px;
 }
 
-.harmony-dropdown {
+.harmony-dropdown, .format-dropdown {
     padding: 12px 20px;
     border: 2px solid #667eea;
     border-radius: 25px;
@@ -77,12 +77,12 @@ header p {
     outline: none;
 }
 
-.harmony-dropdown:hover {
+.harmony-dropdown:hover, .format-dropdown:hover {
     border-color: #f5576c;
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
 }
 
-.harmony-dropdown:focus {
+.harmony-dropdown:focus, .format-dropdown:focus {
     border-color: #f5576c;
     box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
 }
@@ -213,7 +213,7 @@ header p {
         gap: 15px;
     }
     
-    .harmony-selector {
+    .harmony-selector, .format-selector {
         order: -1;
     }
     
@@ -221,7 +221,7 @@ header p {
         width: 200px;
     }
     
-    .harmony-dropdown {
+    .harmony-dropdown, .format-dropdown {
         min-width: 200px;
     }
 }

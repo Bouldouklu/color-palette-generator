@@ -6,6 +6,7 @@ class ColorPaletteGenerator {
         this.generateBtn = document.getElementById('generateBtn');
         this.exportBtn = document.getElementById('exportBtn');
         this.harmonyTypeSelector = document.getElementById('harmonyType');
+        this.colorFormatSelector = document.getElementById('colorFormat');
         
         // Store the current palette colors for export functionality
         this.currentPalette = [];
@@ -24,6 +25,9 @@ class ColorPaletteGenerator {
         
         // When harmony type changes, generate a new palette automatically
         this.harmonyTypeSelector.addEventListener('change', () => this.generatePalette());
+        
+        // When color format changes, update the display without generating new colors
+        this.colorFormatSelector.addEventListener('change', () => this.renderPalette());
         
         // Create an initial palette when the app loads
         this.generatePalette();
@@ -50,7 +54,67 @@ class ColorPaletteGenerator {
         };
     }
     
-    // Convert HSL color values to HEX format
+    // Convert HSL color values to RGB format
+    hslToRgb(h, s, l) {
+        s /= 100; // Convert saturation percentage to decimal
+        l /= 100; // Convert lightness percentage to decimal
+        
+        const c = (1 - Math.abs(2 * l - 1)) * s; // Chroma
+        const x = c * (1 - Math.abs((h / 60) % 2 - 1)); // Second largest component
+        const m = l - c / 2; // Match lightness
+        
+        let r, g, b;
+        
+        // Determine RGB based on hue sector
+        if (0 <= h && h < 60) {
+            r = c; g = x; b = 0;
+        } else if (60 <= h && h < 120) {
+            r = x; g = c; b = 0;
+        } else if (120 <= h && h < 180) {
+            r = 0; g = c; b = x;
+        } else if (180 <= h && h < 240) {
+            r = 0; g = x; b = c;
+        } else if (240 <= h && h < 300) {
+            r = x; g = 0; b = c;
+        } else {
+            r = c; g = 0; b = x;
+        }
+        
+        // Convert to 0-255 range and round
+        r = Math.round((r + m) * 255);
+        g = Math.round((g + m) * 255);
+        b = Math.round((b + m) * 255);
+        
+        return { r, g, b };
+    }
+    
+    // Get the color value in the selected format
+    getColorInFormat(color, format) {
+        switch (format) {
+            case 'rgb':
+                const rgb = this.hslToRgb(color.hue, color.saturation, color.lightness);
+                return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            case 'hsl':
+                return color.hsl;
+            case 'hex':
+            default:
+                return color.hex;
+        }
+    }
+    
+    // Get the color value that should be copied to clipboard
+    getColorValueForCopy(color, format) {
+        switch (format) {
+            case 'rgb':
+                const rgb = this.hslToRgb(color.hue, color.saturation, color.lightness);
+                return `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+            case 'hsl':
+                return `${color.hue}, ${color.saturation}%, ${color.lightness}%`;
+            case 'hex':
+            default:
+                return color.hex;
+        }
+    }
     // This is a mathematical conversion formula
     hslToHex(h, s, l) {
         l /= 100; // Convert lightness percentage to decimal (0-1)
@@ -356,28 +420,34 @@ class ColorPaletteGenerator {
         // Clear any existing colors from the display
         this.paletteContainer.innerHTML = '';
         
+        // Get the selected color format
+        const selectedFormat = this.colorFormatSelector.value;
+        
         // Create a visual box for each color in the palette
         this.currentPalette.forEach((color, index) => {
             // Create the main color box container
             const colorBox = document.createElement('div');
             colorBox.className = 'color-box';
-            colorBox.style.backgroundColor = color.hsl; // Set the background to the color
+            colorBox.style.backgroundColor = color.hsl; // Always use HSL for background color
             
             // Create container for color information text
             const colorInfo = document.createElement('div');
             colorInfo.className = 'color-info';
             
-            // Display the hex code (e.g., #FF5733)
+            // Display the color code in the selected format
             const colorCode = document.createElement('div');
             colorCode.className = 'color-code';
-            colorCode.textContent = color.hex;
+            colorCode.textContent = this.getColorInFormat(color, selectedFormat);
             
             // Assemble the color info display
             colorInfo.appendChild(colorCode);
             colorBox.appendChild(colorInfo);
             
-            // Make the color box clickable to copy the hex code
-            colorBox.addEventListener('click', () => this.copyToClipboard(color.hex));
+            // Make the color box clickable to copy the color value in selected format
+            colorBox.addEventListener('click', () => {
+                const valueToCopy = this.getColorValueForCopy(color, selectedFormat);
+                this.copyToClipboard(valueToCopy);
+            });
             
             // Add the completed color box to the palette container
             this.paletteContainer.appendChild(colorBox);
@@ -430,13 +500,20 @@ class ColorPaletteGenerator {
         // Create structured data object for export
         const paletteData = {
             harmonyType: harmonyType,               // Include the harmony type used
-            colors: this.currentPalette.map(color => ({
-                hex: color.hex,
-                hsl: color.hsl,
-                hue: color.hue,
-                saturation: color.saturation,
-                lightness: color.lightness
-            })),
+            colors: this.currentPalette.map(color => {
+                const rgb = this.hslToRgb(color.hue, color.saturation, color.lightness);
+                return {
+                    hex: color.hex,
+                    hsl: color.hsl,
+                    rgb: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
+                    hue: color.hue,
+                    saturation: color.saturation,
+                    lightness: color.lightness,
+                    red: rgb.r,
+                    green: rgb.g,
+                    blue: rgb.b
+                };
+            }),
             timestamp: new Date().toISOString(),    // When palette was created
             name: `${harmonyType}_palette_${Date.now()}`  // Descriptive filename
         };
